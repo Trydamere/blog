@@ -2,17 +2,17 @@ name: deploying Hexo project to GitHub pages
 on:
   push:
     branches:
-      - master # master 分支有 push 行为时就触发这个 action
+      - main # master 分支有 push 行为时就触发这个 action
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@main
 
       - name: Build and Deploy
-        uses: theme-keep/hexo-deploy-github-pages-action@master # 使用专门部署 Hexo 到 GitHub pages 的 action
+        uses: theme-keep/hexo-deploy-github-pages-action@main # 使用专门部署 Hexo 到 GitHub pages 的 action
         env:
           PERSONAL_TOKEN: ${{ secrets.HEXO_DEPLOY }} # secret 名
           PUBLISH_REPOSITORY: Trydamere/blog # 公共仓库，格式：GitHub 用户名/仓库名
