@@ -14,7 +14,7 @@ hexo new post 测试文章
 
 在测试文章.md中添加内容如下，演示了图片的三种引用方式。第一种为官方推荐用法，第二种为markdown语法，第三种和前两种图片存放位置不一样，是将图片放在`\source\images`目录下。这三种写法在md文件中图片是无法显示的，但是在页面上能正常显示。
 
-图片的引入方式可参考官方文档 https://hexo.io/zh-cn/docs/asset-folders.html，有详细介绍。
+图片的引入方式可参考官方文档 https://hexo.io/zh-cn/docs/asset-folders.html
 
 ```
 {% asset_img test.png 图片引用方法一 %}
@@ -27,13 +27,10 @@ hexo new post 测试文章
 
 本地启动
 
-本地启动
-
 ```
 hexo g -d
 hexo s
 ```
 
-浏览器访问 http://localhost:4000，页面如下，文章添加成功
-
-之后push到远程仓库，完成发布。
+浏览器访问 http://localhost:4000
+文章添加成功，之后push到远程仓库，完成发布。
