@@ -1,4 +1,4 @@
-## hexo-blog
+## blog
 
 
 
