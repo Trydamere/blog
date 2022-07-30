@@ -1,0 +1,1047 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本博客是根据黑马JVM课程所做的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM笔记">
+<meta property="og:url" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Trydamere">
+<meta property="og:description" content="本博客是根据黑马JVM课程所做的笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%96%B9%E6%B3%95%E5%8C%BA%E7%BB%84%E6%88%90.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%A4%8D%E5%88%B6.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E4%B8%B2%E8%A1%8C.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%90%9E%E5%90%90%E9%87%8F%E4%BC%98%E5%85%88.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E4%BC%98%E5%85%88.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/CMS%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/G1%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E9%98%B6%E6%AE%B5.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8(1).png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8(2).png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/Remark.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%B8%B8%E9%87%8F%E6%B1%A0%E8%BD%BD%E5%85%A5%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%96%B9%E6%B3%95%E5%AD%97%E8%8A%82%E7%A0%81%E8%BD%BD%E5%85%A5%E6%96%B9%E6%B3%95%E5%8C%BA.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/main%E7%BA%BF%E7%A8%8B%E5%BC%80%E5%A7%8B%E8%BF%90%E8%A1%8C.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%8A%A0%E8%BD%BD.png">
+<meta property="og:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/clinit%E6%B3%A8%E6%84%8F.png">
+<meta property="article:published_time" content="2022-04-27T20:58:47.000Z">
+<meta property="article:modified_time" content="2022-07-30T04:00:08.030Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="原创">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png">
+  
+  
+  <title>JVM笔记 - Trydamere</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"wrkENcnfSbJ0ggzKaUDfz8WY-gzGzoHsz","app_key":"GxHIyhoHwxinOxyKf06Me1o7","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Trydamere</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/blog/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="JVM笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-04-27 20:58" pubdate>
+        2022年4月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9.1k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      77 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">JVM笔记</h1>
+            
+            <div class="markdown-body">
+              <h1 id="JVM学习"><a href="#JVM学习" class="headerlink" title="JVM学习"></a>JVM学习</h1><p>本博客是根据<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yE411Z7AP">黑马JVM</a>课程所做的笔记</p>
+<h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1.引言"></a>1.引言</h2><h3 id="1-1-什么是JVM"><a href="#1-1-什么是JVM" class="headerlink" title="1.1.什么是JVM?"></a>1.1.什么是JVM?</h3><p>定义</p>
+<p>Java Virtual Machine- Java程序运行环境(Java)</p>
+<p>好处:</p>
+<ul>
+<li>一次编写，到处运行</li>
+<li>自动内存管理，垃圾回收功能</li>
+<li>数组下标越界检查</li>
+<li>多态</li>
+</ul>
+<p>比较:</p>
+<p>jvm jre jdk</p>
+
+
+<h2 id="2-内存结构"><a href="#2-内存结构" class="headerlink" title="2.内存结构"></a>2.内存结构</h2><ol>
+<li>程序计数器</li>
+<li>虚拟机栈</li>
+<li>本地方法栈</li>
+<li>堆</li>
+<li>方法区</li>
+</ol>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png" srcset="/blog/img/loading.gif" lazyload class="" title="内存结构">
+
+<h3 id="2-1-程序计数器"><a href="#2-1-程序计数器" class="headerlink" title="2.1.程序计数器"></a>2.1.程序计数器</h3><h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>记住下一条jvm指令的执行地址</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>线程私有</li>
+<li>不会存在内存溢出</li>
+</ul>
+<h3 id="2-2-虚拟机栈"><a href="#2-2-虚拟机栈" class="headerlink" title="2.2.虚拟机栈"></a>2.2.虚拟机栈</h3><ul>
+<li>每个线程运行时所需要的内存，称为虚拟机栈</li>
+<li>每个栈由多个栈帧(Frame)组成，对应每个方法调用所占用的内存，栈帧中包括了局部变量,操作数栈,动态链接,方法返回地址</li>
+<li>每个线程只能有一个活动栈帧，对应着当前正在执行的方法</li>
+</ul>
+<p>问题辨析</p>
+<ol>
+<li>垃圾回收是否涉及栈内存?<ul>
+<li>不需要。虚拟机栈由一个个栈帧组成，在方法执行完毕后，对应栈帧会弹出栈。所以无需通过垃圾回收机制回收内存。</li>
+</ul>
+</li>
+<li>栈内存分配越大越好？<ul>
+<li>不是，物理内存是一定，栈内存越大，可以支持更多的方法调用，但是可执行线程数越少。</li>
+</ul>
+</li>
+<li>方法内的局部变量是否线程安全?<ul>
+<li>如果方法内局部变量没有逃离方法的作用范围，则是线程安全。</li>
+<li>如果局部变量引用对象，并逃离方法的作用范围，则需要考虑线程安全</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-3-本地方法栈"><a href="#2-3-本地方法栈" class="headerlink" title="2.3.本地方法栈"></a>2.3.本地方法栈</h3><p>一些带有native关键字的方法需要Java去调用本地的C或者C++方法，因为Java有时候没法直接和操作系统交互，所以需要本地方法。</p>
+<h3 id="2-4-堆"><a href="#2-4-堆" class="headerlink" title="2.4.堆"></a>2.4.堆</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>通过new关键字，创建对象都会使用堆内存</p>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>线程共享，堆中对象都需要考虑线程安全问题</li>
+<li>有垃圾回收机制</li>
+</ul>
+<h3 id="2-5-方法区"><a href="#2-5-方法区" class="headerlink" title="2.5.方法区"></a>2.5.方法区</h3><h4 id="2-5-1-定义"><a href="#2-5-1-定义" class="headerlink" title="2.5.1.定义"></a>2.5.1.定义</h4><p> It stores per-class structures such as the run-time constant pool, field and method data, and the code for methods and constructors, including the special methods used in class and instance initialization and interface initialization.</p>
+<h4 id="2-5-2-组成"><a href="#2-5-2-组成" class="headerlink" title="2.5.2.组成"></a>2.5.2.组成</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%96%B9%E6%B3%95%E5%8C%BA%E7%BB%84%E6%88%90.png" srcset="/blog/img/loading.gif" lazyload class="" title="方法区组成">
+
+<h4 id="2-5-3-运行时常量池"><a href="#2-5-3-运行时常量池" class="headerlink" title="2.5.3.运行时常量池"></a>2.5.3.运行时常量池</h4><ul>
+<li>常量池，就是一张表，虚拟机指令根据这张常量表找到要执行的表名、方法名、参数类型、字面量等信息</li>
+<li>运行时常量池，常量池是*.class文件中，当该类被加载，它的常量池信息放入运行时常量池，并把里面的符号地址变成真实地址</li>
+<li>1.8后运行时常量池还在方法区，方法区的实现为元空间，字符串常量池在堆</li>
+</ul>
+<h4 id="2-5-4-StringTable特性"><a href="#2-5-4-StringTable特性" class="headerlink" title="2.5.4.StringTable特性"></a>2.5.4.StringTable特性</h4><ul>
+<li>常量池中的字符串仅是符号，第一次用到时才变成对象</li>
+<li>利用串池的机制，来避免重复创建字符串对象</li>
+<li>字符串变量拼接的原理是StringBuilder</li>
+<li>字符串常量拼接的原理是编译期优化</li>
+<li>可以使用intern方法，主动将串池中还没有的字符串对象加入串池。JDK1.8将字符串对象尝试放入串池，如果有则不会放入，如果没有则将对象引用放入串池，而不会重新创建对象，因为StringTable在堆中</li>
+</ul>
+<h3 id="2-6-直接内存"><a href="#2-6-直接内存" class="headerlink" title="2.6.直接内存"></a>2.6.直接内存</h3><h4 id="2-6-1-定义"><a href="#2-6-1-定义" class="headerlink" title="2.6.1.定义"></a>2.6.1.定义</h4><p>Direct Memory</p>
+<ul>
+<li>常见于NIO操作时，用于数据缓冲区</li>
+<li>分配回收成本高，但读写性能高</li>
+<li>不受JVM内存回收管理</li>
+</ul>
+<h4 id="2-6-2-分配和回收原理"><a href="#2-6-2-分配和回收原理" class="headerlink" title="2.6.2.分配和回收原理"></a>2.6.2.分配和回收原理</h4><ul>
+<li>使用Unsafe对象完成直接内存的分配回收，并且回收需要主动调用freeMemory方法</li>
+<li>ByteBuffer的实现类内部，使用Cleaner(虚引用)来监控ByteBuffer对象，一旦ByteBuffer对象被垃圾回收，就会由ReferenceHandler线程通过cleaner的clean方法调用freeMemory来释放直接内存</li>
+</ul>
+<h2 id="3-垃圾回收"><a href="#3-垃圾回收" class="headerlink" title="3.垃圾回收"></a>3.垃圾回收</h2><h3 id="3-1-如何判断对象可以回收"><a href="#3-1-如何判断对象可以回收" class="headerlink" title="3.1.如何判断对象可以回收"></a>3.1.如何判断对象可以回收</h3><h4 id="3-1-1-引用计数法"><a href="#3-1-1-引用计数法" class="headerlink" title="3.1.1 引用计数法"></a>3.1.1 引用计数法</h4><p>弊端: 循环引用时，两个对象的计数都为1，导致两个对象都无法释放</p>
+<h4 id="3-1-2-可达性分析算法"><a href="#3-1-2-可达性分析算法" class="headerlink" title="3.1.2 可达性分析算法"></a>3.1.2 可达性分析算法</h4><ul>
+<li>Java虚拟机中垃圾回收器采用可达性分析来探索所有存活对象</li>
+<li>扫描堆中对象，看是否能够沿着<code>GC ROOT对象</code>为起点的引用链找到该对象，找不到，表示可以回收</li>
+<li>哪些对象可以作为<code>GC ROOT</code>？<ul>
+<li>虚拟机栈(栈帧中的本地变量表)中引用的对象</li>
+<li>方法区中类静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+<li>本地方法栈中JNI(Native方法)引用的对象</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-1-3-五种引用"><a href="#3-1-3-五种引用" class="headerlink" title="3.1.3 五种引用"></a>3.1.3 五种引用</h4><ol>
+<li>强引用<ul>
+<li>只有所有GC ROOT对象都不通过【强引用】引用该对象，该对象才能垃圾回收</li>
+</ul>
+</li>
+<li>软引用<ul>
+<li>仅有软引用引用该对象时，在垃圾回收后，内存仍不足时会再次触发垃圾回收，回收软引用对象</li>
+<li>可以配合引用队列来释放软引用自身</li>
+</ul>
+</li>
+<li>弱引用<ul>
+<li>仅有软引用引用该对象时，在垃圾回收时，无论内存是否充足，都会回收弱引用对象</li>
+<li>可以配合引用队列释放弱引用自身</li>
+</ul>
+</li>
+<li>虚引用<ul>
+<li>必须配合引用队列使用，主要配合ByteBuffer使用，被引用对象回收时，会将虚引用入队，由Reference Handler线程调用虚引用相关方法释放直接内存</li>
+</ul>
+</li>
+<li>终结器引用<ul>
+<li>无需手动编码，但其内部配合引用队列使用，在垃圾回收时，终结器引用入队(被引用对象暂时没有被回收)，再由Finalizer线程通过终结器引用找到被引用对象并调用它的finalize方法，第二次GC时才能回收被引用对象</li>
+</ul>
+</li>
+</ol>
+<p>引用队列</p>
+<ul>
+<li>软引用和弱引用可以配合引用队列<ul>
+<li>在软引用和弱引用所引用的对象被回收后，将这些引用放入引用队列中，方便一起回收这些软&#x2F;弱引用对象</li>
+</ul>
+</li>
+<li>虚引用和终结器引用必须配合引用队列<ul>
+<li>虚引用和终结器引用在使用时会关联一个引用队列</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-垃圾回收算法"><a href="#3-2-垃圾回收算法" class="headerlink" title="3.2 垃圾回收算法"></a>3.2 垃圾回收算法</h3><h4 id="3-2-1-标记清除"><a href="#3-2-1-标记清除" class="headerlink" title="3.2.1 标记清除"></a>3.2.1 标记清除</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4.png" srcset="/blog/img/loading.gif" lazyload class="" title="标记清除">
+
+<h5 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h5><p>在虚拟机执行垃圾回收的过程中，先采用标记算法确定可回收对象，然后垃圾收集器根据标识清除相应内容，给堆内存腾出相应空间</p>
+<ul>
+<li>这里腾出内存空间并不是将内存空间的字节清0，而是记录下这段内存的起始结束地址，下次分配内存的时候，直接覆盖这段内存</li>
+</ul>
+<h5 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h5><ul>
+<li>速度较快</li>
+<li>会造成内存碎片</li>
+</ul>
+<h4 id="3-2-2-标记整理"><a href="#3-2-2-标记整理" class="headerlink" title="3.2.2 标记整理"></a>3.2.2 标记整理</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png" srcset="/blog/img/loading.gif" lazyload class="" title="标记整理">
+
+<ul>
+<li>速度慢</li>
+<li>没有内存碎片</li>
+</ul>
+<h4 id="3-2-3-复制"><a href="#3-2-3-复制" class="headerlink" title="3.2.3 复制"></a>3.2.3 复制</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%A4%8D%E5%88%B6.png" srcset="/blog/img/loading.gif" lazyload class="" title="复制">
+
+<h5 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h5><p>将内存分为等大小的两个区域FROM和TO，先将被GC ROOT引用的对象从FROM放入TO，再回收不被GC ROOT引用的对象。然后交换FROM和TO。</p>
+<h5 id="特点-3"><a href="#特点-3" class="headerlink" title="特点"></a>特点</h5><ul>
+<li>不会有内存碎片</li>
+<li>占用双倍内存</li>
+</ul>
+<h3 id="3-3分代垃圾回收"><a href="#3-3分代垃圾回收" class="headerlink" title="3.3分代垃圾回收"></a>3.3分代垃圾回收</h3><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6.png" srcset="/blog/img/loading.gif" lazyload class="" title="分代垃圾回收">
+
+<ul>
+<li>对象首先分配在伊甸园区域</li>
+<li>新生代空间不足时，触发minor gc，伊甸园和From存活的对象使用copy复制到to中，存活的对象年龄加1并且交换from to</li>
+<li>minor gc会引发stop the world，暂停其他用户线程，等垃圾回收结束，用户线程才恢复运行</li>
+<li>当对象寿命超过阈值，会晋升老年代，最大寿命是15(4 bit)</li>
+<li>当老年代空间不足，会首先尝试触发minor gc，如果之后空间仍不足，那么触发full gc，扫描新生代和老年代中所有不再使用的对象并回收，STW的时间更长</li>
+</ul>
+<h3 id="3-4垃圾回收器"><a href="#3-4垃圾回收器" class="headerlink" title="3.4垃圾回收器"></a>3.4垃圾回收器</h3><ol>
+<li>串行<ul>
+<li>单线程</li>
+<li>堆内存较小</li>
+</ul>
+</li>
+<li>吞吐量优先<ul>
+<li>多线程</li>
+<li>堆内存较大，多核CPU</li>
+<li>单位时间内，垃圾回收时间占比最低</li>
+</ul>
+</li>
+<li>响应时间优先<ul>
+<li>多线程</li>
+<li>堆内存较大，多核CPU</li>
+<li>单次STW时间最短</li>
+</ul>
+</li>
+</ol>
+<h4 id="3-4-1-串行"><a href="#3-4-1-串行" class="headerlink" title="3.4.1 串行"></a>3.4.1 串行</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E4%B8%B2%E8%A1%8C.png" srcset="/blog/img/loading.gif" lazyload class="" title="串行">
+
+<h4 id="3-4-2-Serial收集器"><a href="#3-4-2-Serial收集器" class="headerlink" title="3.4.2 Serial收集器"></a>3.4.2 Serial收集器</h4><p>特点：单线程、采用<strong>复制算法</strong>。对于限定单CPU的环境，Serial收集器由于没有线程交互的开销，收集效率高。收集器进行垃圾回收时，必须暂停其他所有工作线程，直到它结束(STW)</p>
+<h4 id="3-4-3-ParNew收集器"><a href="#3-4-3-ParNew收集器" class="headerlink" title="3.4.3 ParNew收集器"></a>3.4.3 ParNew收集器</h4><p>特点：Serial收集器多线程版本，多线程，和Serial收集器一样存在STW问题。</p>
+<h4 id="3-4-4-serial-Old收集器"><a href="#3-4-4-serial-Old收集器" class="headerlink" title="3.4.4 serial Old收集器"></a>3.4.4 serial Old收集器</h4><p>Serial Old是Serial收集器的老年代版本</p>
+<p>特点：同样单线程收集器，采用<strong>标记-整理算法</strong>(老年代没有幸存区)</p>
+<h4 id="3-4-5-吞吐量优先"><a href="#3-4-5-吞吐量优先" class="headerlink" title="3.4.5 吞吐量优先"></a>3.4.5 吞吐量优先</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%90%9E%E5%90%90%E9%87%8F%E4%BC%98%E5%85%88.png" srcset="/blog/img/loading.gif" lazyload class="" title="吞吐量优先">
+
+<h4 id="3-4-6-Parallel-Scavenge收集器"><a href="#3-4-6-Parallel-Scavenge收集器" class="headerlink" title="3.4.6 Parallel Scavenge收集器"></a>3.4.6 Parallel Scavenge收集器</h4><p>与吞吐量关系密切，也称为吞吐量优先收集器</p>
+<p>特点: 属于新生代收集器，采用复制算法，并行多线程收集器</p>
+<h4 id="3-4-7-Parallel-Old收集器"><a href="#3-4-7-Parallel-Old收集器" class="headerlink" title="3.4.7 Parallel Old收集器"></a>3.4.7 Parallel Old收集器</h4><p>Parallel Scavenge收集器老年代版本</p>
+<p>特点：多线程，采用<strong>标记-整理算法</strong></p>
+<h4 id="3-4-8-响应时间优先"><a href="#3-4-8-响应时间优先" class="headerlink" title="3.4.8 响应时间优先"></a>3.4.8 响应时间优先</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E4%BC%98%E5%85%88.png" srcset="/blog/img/loading.gif" lazyload class="" title="响应时间优先">
+
+<h4 id="3-4-9-CMS收集器"><a href="#3-4-9-CMS收集器" class="headerlink" title="3.4.9 CMS收集器"></a>3.4.9 CMS收集器</h4><p>Concurrent Mark Sweep，一种以获取最短回收停顿时间为目标的老年代收集器</p>
+<p>特点：基于<strong>标记-清除算法</strong>。并发收集、低停顿，但是会产生碎片</p>
+<p>运行过程分为下列4步：</p>
+<ol>
+<li><strong>初始标记</strong>：标记GC ROOT能直接到的对象。速度快但是<strong>存在STW问题</strong></li>
+<li><strong>并发标记</strong>：进行GC ROOT Tracing过程，找出存活对象并且用户线程可并发执行</li>
+<li><strong>重新标记</strong>：为了<strong>修正并发标记期间</strong>因用户程序继续运行而导致标记产生变动的那部分对象的标记记录。<strong>存在STW问题</strong></li>
+<li><strong>并发清除</strong>：对标记对象进行清除回收，内存回收过程是与用户线程<strong>并发执行</strong></li>
+</ol>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/CMS%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload class="" title="CMS运行示意图">
+
+<h4 id="3-4-10-G1收集器"><a href="#3-4-10-G1收集器" class="headerlink" title="3.4.10 G1收集器"></a>3.4.10 G1收集器</h4><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/G1%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png" srcset="/blog/img/loading.gif" lazyload class="" title="G1运行示意图">
+
+
+<p>G1收集器的运作过程大致可划分为以下四个步骤：</p>
+<ol>
+<li>初始标记（Initial Marking）：仅仅只是标记一下GC Roots能直接关联到的对象，并且修改TAMS指针的值，让下一阶段用户线程并发运行时，能正确地在可用的Region中分配新对象。这个阶段需要停顿线程，但耗时很短，而且是借用进行Minor GC的时候同步完成的，所以G1收集器在这个阶段实际并没有额外的停顿。</li>
+<li>并发标记（Concurrent Marking）：从GC Root开始对堆中对象进行可达性分析，递归扫描整个堆里的对象图，找出要回收的对象，这阶段耗时较长，但可与用户程序并发执行。当对象图扫描完成以后，还要重新处理SATB记录下的在并发时有引用变动的对象。</li>
+<li>最终标记（Final Marking）：对用户线程做另一个短暂的暂停，用于处理并发阶段结束后仍遗留下来的最后那少量的SATB记录。</li>
+<li>筛选回收（Live Data Counting and Evacuation）：负责更新Region的统计数据，对各个Region的回收价值和成本进行排序，根据用户所期望的停顿时间来制定回收计划，可以自由选择任意多个Region构成回收集，然后把决定回收的那一部分Region的存活对象复制到空的Region中，再清理掉整个旧Region的全部空间。这里的操作涉及存活对象的移动，是必须暂停用户线程，由多条收集器线程并行完成的。</li>
+</ol>
+<p>从上述阶段的描述可以看出，G1收集器除了并发标记外，其余阶段也是要完全暂停用户线程的</p>
+<p>适用场景：</p>
+<ul>
+<li>同时注重吞吐量(Throughput)和低延迟(Low latency)</li>
+<li>超大堆内存，会将堆划分多个大小相等的Region</li>
+<li>整体是<strong>标记+整理</strong>算法，两个区域之间是<strong>复制</strong>算法</li>
+</ul>
+<h5 id="G1垃圾回收阶段"><a href="#G1垃圾回收阶段" class="headerlink" title="G1垃圾回收阶段"></a>G1垃圾回收阶段</h5><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/G1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E9%98%B6%E6%AE%B5.png" srcset="/blog/img/loading.gif" lazyload class="" title="G1垃圾回收阶段">
+
+<p>新生代伊甸园垃圾回收—–&gt;内存不足，新生代回收+并发标记—–&gt;回收新生代伊甸园、幸存区、老年代内存——&gt;新生代伊甸园垃圾回收(重新开始)</p>
+<h5 id="Young-Collection"><a href="#Young-Collection" class="headerlink" title="Young Collection"></a>Young Collection</h5><p><strong>分区算法region</strong></p>
+<p>分代是按对象的生命周期划分，分区则是将堆空间划分连续几个不同小区间，每一个小区间独立回收，可以控制一次回收多少个小区间，方便控制 GC 产生的停顿时间</p>
+<p>E：伊甸园 S：幸存区 O：老年代</p>
+<ul>
+<li>会STW</li>
+</ul>
+
+
+
+
+
+
+<h5 id="Young-Collection-CM"><a href="#Young-Collection-CM" class="headerlink" title="Young Collection + CM"></a>Young Collection + CM</h5><ul>
+<li>在 Young GC 时会进行 GC Root 的初始标记</li>
+<li>老年代占用堆空间比例达到阈值时，进行并发标记（不会 STW），由下面的 JVM 参数决定</li>
+</ul>
+
+
+<h5 id="Mixed-Collection"><a href="#Mixed-Collection" class="headerlink" title="Mixed Collection"></a>Mixed Collection</h5><p>会对 E、S、O 进行全面垃圾回收</p>
+<ul>
+<li>最终标记（Remark）会 STW</li>
+<li>拷贝存活（Evacuation）会 STW</li>
+</ul>
+
+
+<p><strong>问</strong>：为什么有的老年代被拷贝了，有的没拷贝？</p>
+<p>因为指定了最大停顿时间，如果对所有老年代都进行回收，耗时可能过高。为了保证时间不超过设定的停顿时间，会<strong>回收最有价值的老年代</strong>（回收后，能够得到更多内存）</p>
+<h5 id="Full-GC"><a href="#Full-GC" class="headerlink" title="Full GC"></a>Full GC</h5><ul>
+<li>SerialGC<ul>
+<li>新生代内存不足发生的垃圾收集 - minor gc</li>
+<li>老年代内存不足发生的垃圾收集 - full gc</li>
+</ul>
+</li>
+<li>ParallelGC<ul>
+<li>新生代内存不足发生的垃圾收集 - minor gc</li>
+<li>老年代内存不足发生的垃圾收集 - full gc</li>
+</ul>
+</li>
+<li>CMS<ul>
+<li>新生代内存不足发生的垃圾收集 - minor gc</li>
+<li>老年代内存不足 - full gc</li>
+</ul>
+</li>
+<li>G1<ul>
+<li>新生代内存不足发生的垃圾收集 - minor gc</li>
+<li>老年代内存不足</li>
+</ul>
+</li>
+</ul>
+<p>G1在老年代内存不足时（老年代所占内存超过阈值）</p>
+<ul>
+<li>如果垃圾产生速度慢于垃圾回收速度，不会触发Full GC，还是并发地进行清理</li>
+<li>如果垃圾产生速度快于垃圾回收速度，便会触发Full GC</li>
+</ul>
+<h5 id="Young-Collection-跨代引用"><a href="#Young-Collection-跨代引用" class="headerlink" title="Young Collection 跨代引用"></a>Young Collection 跨代引用</h5><p>新生代回收的跨代引用（老年代引用新生代）问题</p>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8(1).png" srcset="/blog/img/loading.gif" lazyload class="" title="跨代引用(1)">
+
+<ul>
+<li>卡表与 <code>Remembered Set</code><ul>
+<li>Remembered Set 存在于E中，用于保存新生代对象对应的脏卡<ul>
+<li>脏卡：O被划分为多个区域，如果该区域引用了新生代对象，则该区域被称为脏卡</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在引用变更时通过 <code>post-write barrier</code> + <code>dirty card queue</code></li>
+<li><code>concurrent refinement threads</code> 更新 <code>Remembered Set</code></li>
+</ul>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8(2).png" srcset="/blog/img/loading.gif" lazyload class="" title="跨代引用(2)">
+
+<h5 id="Remark"><a href="#Remark" class="headerlink" title="Remark"></a>Remark</h5><p>重新标记阶段</p>
+<p>在垃圾回收时，收集器处理对象的过程中</p>
+<p>黑色：已被处理，需要保留的 </p>
+<p>灰色：正在处理中的 </p>
+<p>白色：还未处理的</p>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/Remark.png" srcset="/blog/img/loading.gif" lazyload class="" title="Remark">
+
+<p>但是在<strong>并发标记过程中</strong>，有可能A被处理了以后未引用C，但该处理过程还未结束，在处理过程结束之前A引用了C，这时就会用到remark</p>
+<p>过程如下</p>
+<ul>
+<li>之前C未被引用，这时A引用了C，就会给C加一个写屏障，写屏障的指令会被执行，将C放入一个队列当中，并将C变为处理中 状态</li>
+<li>在<strong>并发标记</strong>阶段结束以后，重新标记阶段会STW，然后将放在该队列中的对象重新处理，发现有强引用引用它，就会处理它</li>
+</ul>
+<h2 id="4-类加载与字节码技术"><a href="#4-类加载与字节码技术" class="headerlink" title="4.类加载与字节码技术"></a>4.类加载与字节码技术</h2><h3 id="4-2-字节码指令"><a href="#4-2-字节码指令" class="headerlink" title="4.2 字节码指令"></a>4.2 字节码指令</h3><h4 id="4-2-3-图解方法执行流程"><a href="#4-2-3-图解方法执行流程" class="headerlink" title="4.2.3 图解方法执行流程"></a>4.2.3 图解方法执行流程</h4><h5 id="1-原始Java代码"><a href="#1-原始Java代码" class="headerlink" title="1.原始Java代码"></a>1.原始Java代码</h5><h5 id="2-编译成字节码文件"><a href="#2-编译成字节码文件" class="headerlink" title="2.编译成字节码文件"></a>2.编译成字节码文件</h5><h5 id="3-常量池载入运行时常量池"><a href="#3-常量池载入运行时常量池" class="headerlink" title="3.常量池载入运行时常量池"></a>3.常量池载入运行时常量池</h5><p>常量池也属于方法区，只不过这里单独提出来了</p>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%B8%B8%E9%87%8F%E6%B1%A0%E8%BD%BD%E5%85%A5%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0.png" srcset="/blog/img/loading.gif" lazyload class="" title="常量池载入运行时常量池">
+
+
+
+
+<h5 id="4-方法字节码载入方法区"><a href="#4-方法字节码载入方法区" class="headerlink" title="4.方法字节码载入方法区"></a>4.方法字节码载入方法区</h5><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E6%96%B9%E6%B3%95%E5%AD%97%E8%8A%82%E7%A0%81%E8%BD%BD%E5%85%A5%E6%96%B9%E6%B3%95%E5%8C%BA.png" srcset="/blog/img/loading.gif" lazyload class="" title="方法字节码载入方法区">
+
+
+
+<h5 id="main线程开始运行，分配栈帧内存"><a href="#main线程开始运行，分配栈帧内存" class="headerlink" title="main线程开始运行，分配栈帧内存"></a>main线程开始运行，分配栈帧内存</h5><img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/main%E7%BA%BF%E7%A8%8B%E5%BC%80%E5%A7%8B%E8%BF%90%E8%A1%8C.png" srcset="/blog/img/loading.gif" lazyload class="" title="main线程开始运行">
+
+
+<h5 id="执行引擎开始执行字节码"><a href="#执行引擎开始执行字节码" class="headerlink" title="执行引擎开始执行字节码"></a>执行引擎开始执行字节码</h5><h4 id="4-2-10多态原理"><a href="#4-2-10多态原理" class="headerlink" title="4.2.10多态原理"></a>4.2.10多态原理</h4><p>因为普通成员方法需要在运行时才能确定具体的内容，所以虚拟机需要调用<strong>invokevirtual</strong>指令</p>
+<p>在执行invokevirtual指令时，经历了以下几个步骤</p>
+<ul>
+<li>先通过栈帧中对象的引用找到对象</li>
+<li>分析对象头，找到对象实际的Class</li>
+<li>Class结构中有<strong>vtable</strong></li>
+<li>查询vtable找到方法的具体地址</li>
+<li>执行方法的字节码</li>
+</ul>
+<h3 id="4-4-类加载阶段"><a href="#4-4-类加载阶段" class="headerlink" title="4.4 类加载阶段"></a>4.4 类加载阶段</h3><h4 id="4-4-1-加载"><a href="#4-4-1-加载" class="headerlink" title="4.4.1 加载"></a>4.4.1 加载</h4><blockquote>
+<p>《深入理解Java虚拟机》</p>
+<ol>
+<li>通过一个类的全限定名来获取定义此类的二进制字节流。</li>
+<li>将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。</li>
+<li>在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。</li>
+</ol>
+</blockquote>
+<ul>
+<li>将类的字节码载入方法区中，内部采用 C++ 的 instanceKlass 描述 java 类，它的重要 ﬁeld 有：<ul>
+<li>_java_mirror 即 java 的类镜像，例如对 String 来说，它的镜像类就是 String.class，作用是把 klass 暴露给 java 使用</li>
+<li>_super 即父类</li>
+<li>_ﬁelds 即成员变量</li>
+<li>_methods 即方法</li>
+<li>_constants 即常量池</li>
+<li>_class_loader 即类加载器</li>
+<li>_vtable 虚方法表</li>
+<li>_itable 接口方法</li>
+</ul>
+</li>
+<li>如果这个类还有父类没有加载，<strong>先加载父类</strong></li>
+<li>加载和链接可能是<strong>交替运行</strong>的</li>
+</ul>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/%E5%8A%A0%E8%BD%BD.png" srcset="/blog/img/loading.gif" lazyload class="" title="加载">
+
+<ul>
+<li>instanceKlass保存在<strong>方法区</strong>。JDK 8以后，方法区位于元空间中，而元空间又位于本地内存中</li>
+<li>_java_mirror则是保存在<strong>堆内存</strong>中</li>
+<li>InstanceKlass和*.class(JAVA镜像类)互相保存了对方的地址</li>
+<li>类的对象在对象头中保存了*.class的地址。让对象可以通过其找到方法区中的instanceKlass，从而获取类的各种信息</li>
+</ul>
+<h4 id="4-4-2-链接"><a href="#4-4-2-链接" class="headerlink" title="4.4.2 链接"></a>4.4.2 链接</h4><h5 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h5><p>验证类是否符合 JVM规范，安全性检查</p>
+<h5 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h5><blockquote>
+<p>《深入理解Java虚拟机》</p>
+<p>准备阶段是正式为类中定义的变量（即静态变量，被static修饰的变量）分配内存并设置类变量初始值的阶段，从概念上讲，这些变量所使用的内存都应当在方法区中进行分配，但必须注意到方法区本身是一个逻辑上的区域，在JDK 8及之后，类变量则会随着Class对象一起存放在Java堆中，这时候“类变量在方法区”就完全是一种对逻辑概念的表述了。</p>
+</blockquote>
+<p>为 static 变量分配空间，设置默认值</p>
+<ul>
+<li>static 变量在 JDK 7 之前存储于 instanceKlass 末尾，从 JDK 7 开始，存储于 _java_mirror 末尾</li>
+<li>static 变量分配空间和赋值是两个步骤，分配空间在准备阶段完成，赋值在初始化阶段完成</li>
+<li>如果 static 变量是 final 的基本类型，以及字符串常量，那么编译阶段值就确定了，赋值在准备阶</li>
+<li>段完成</li>
+<li>如果 static 变量是 final 的，但属于引用类型，那么赋值也会在初始化阶段完成</li>
+</ul>
+<h5 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h5><p>将常量池中的符号引用解析为直接引用</p>
+<p>符号引用（Symbolic References）：符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。符号引用与虚拟机实现的内存布局无关，引用的目标并不一定是已经加载到虚拟机内存当中的内容。</p>
+<p>直接引用（Direct References）：直接引用是可以直接指向目标的指针、相对偏移量或者是一个能间接定位到目标的句柄。直接引用是和虚拟机实现的内存布局直接相关的，同一个符号引用在不同虚<br>拟机实例上翻译出来的直接引用一般不会相同。如果有了直接引用，那引用的目标必定已经在虚拟机的内存中存在。</p>
+<h4 id="4-4-3-初始化"><a href="#4-4-3-初始化" class="headerlink" title="4.4.3 初始化"></a>4.4.3 初始化</h4><p>初始化阶段就是<strong>执行类构造器clinit()方法的过程</strong>，虚拟机会保证这个类的『构造方法』的线程安全</p>
+<ul>
+<li>clinit()方法是由编译器自动收集类中的所有类变量的<strong>赋值动作和静态语句块</strong>（static{}块）中的语句合并产生的</li>
+</ul>
+<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><p>编译器收集的顺序是由语句在源文件中<strong>出现的顺序决定</strong>的，静态语句块中只能访问到定义在静态语句块之前的变量，定义在它<strong>之后</strong>的变量，在前面的静态语句块<strong>可以赋值，但是不能访问</strong>，如</p>
+<img src="/blog/2022/04/27/JVM%E7%AC%94%E8%AE%B0/clinit%E6%B3%A8%E6%84%8F.png" srcset="/blog/img/loading.gif" lazyload class="" title="clinit注意">
+
+
+<h5 id="发生的时机"><a href="#发生的时机" class="headerlink" title="发生的时机"></a>发生的时机</h5><p>概括得说，类初始化是【懒惰的】</p>
+<ul>
+<li>main 方法所在的类，总会被首先初始化</li>
+<li>首次访问这个类的静态变量或静态方法时</li>
+<li>子类初始化，如果父类还没初始化，会引发</li>
+<li>子类访问父类的静态变量，只会触发父类的初始化</li>
+<li>Class.forName</li>
+<li>new 会导致初始化</li>
+</ul>
+<p>不会导致类初始化的情况</p>
+<ul>
+<li><p>访问类的 static final 静态常量（基本类型和字符串）不会触发初始化</p>
+</li>
+<li><p>类对象.class 不会触发初始化</p>
+</li>
+<li><p>创建该类的数组不会触发初始化</p>
+</li>
+<li><p>类加载器的 loadClass 方法</p>
+</li>
+<li><p>Class.forName 的参数 2 为 false 时</p>
+</li>
+</ul>
+<p><strong>验证类是否被初始化，可以看改类的静态代码块是否被执行</strong></p>
+<h3 id="4-5-类加载器"><a href="#4-5-类加载器" class="headerlink" title="4.5 类加载器"></a>4.5 类加载器</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>加载哪的类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bootstrap ClassLoader</td>
+<td>JAVA_HOME&#x2F;jre&#x2F;lib</td>
+<td>无法直接访问</td>
+</tr>
+<tr>
+<td>Extension ClassLoader</td>
+<td>JAVA_HOME&#x2F;jre&#x2F;lib&#x2F;ext</td>
+<td>上级为Bootstrap，显示为null</td>
+</tr>
+<tr>
+<td>Application ClassLoader</td>
+<td>classpath</td>
+<td>上级为Extension</td>
+</tr>
+<tr>
+<td>自定义类加载器</td>
+<td>自定义</td>
+<td>上级为Application</td>
+</tr>
+</tbody></table>
+<h4 id="4-5-1-启动类加载器"><a href="#4-5-1-启动类加载器" class="headerlink" title="4.5.1 启动类加载器"></a>4.5.1 启动类加载器</h4><h4 id="4-5-2-扩展类加载器"><a href="#4-5-2-扩展类加载器" class="headerlink" title="4.5.2 扩展类加载器"></a>4.5.2 扩展类加载器</h4><h4 id="4-5-3-双亲委派模式"><a href="#4-5-3-双亲委派模式" class="headerlink" title="4.5.3 双亲委派模式"></a>4.5.3 双亲委派模式</h4><p>所谓的双亲委派，就是指调用类加载器的 loadClass 方法时，查找类的规则</p>
+<h4 id="4-5-4-线程上下文类加载器"><a href="#4-5-4-线程上下文类加载器" class="headerlink" title="4.5.4 线程上下文类加载器"></a>4.5.4 线程上下文类加载器</h4><p>JDBC使用ServiceLoader机制加载Driver驱动，即Service Provider Interface （SPI）</p>
+<p>ServiceLoader.load 方法由Class.forName 调用了线程上下文类加载器完成类加载，线程上下文类加载器是当前线程使用的类加载器，默认就是应用程序类加载器</p>
+<h3 id="4-6-运行期优化"><a href="#4-6-运行期优化" class="headerlink" title="4.6 运行期优化"></a>4.6 运行期优化</h3><h5 id="即时编译器（JIT）与解释器的区别"><a href="#即时编译器（JIT）与解释器的区别" class="headerlink" title="即时编译器（JIT）与解释器的区别"></a>即时编译器（JIT）与解释器的区别</h5><ul>
+<li>解释器<ul>
+<li>将字节码<strong>解释</strong>为机器码，下次即使遇到相同的字节码，仍会执行重复的解释</li>
+<li>是将字节码解释为针对所有平台都通用的机器码</li>
+</ul>
+</li>
+<li>即时编译器<ul>
+<li>将一些字节码<strong>编译</strong>为机器码，<strong>并存入 Code Cache</strong>，下次遇到相同的代码，直接执行，无需再编译</li>
+<li>根据平台类型，生成平台特定的机器码</li>
+</ul>
+</li>
+</ul>
+<p>对于大部分的不常用的代码，我们无需耗费时间将其编译成机器码，而是采取解释执行的方式运行；另一方面，对于仅占据小部分的热点代码，我们则可以将其编译成机器码，以达到理想的运行速度。 执行效率上简单比较一下 Interpreter &lt; C1 &lt; C2，总的目标是发现热点代码（hotspot名称的由 来），并优化这些热点代码</p>
+<h5 id="逃逸分析"><a href="#逃逸分析" class="headerlink" title="逃逸分析"></a>逃逸分析</h5><p>逃逸分析（Escape Analysis）简单来讲就是，Java Hotspot 虚拟机可以分析新创建对象的使用范围，并决定是否在 Java 堆上分配内存的一项技术</p>
+<p>逃逸分析的 JVM 参数如下：</p>
+<ul>
+<li>开启逃逸分析：-XX:+DoEscapeAnalysis</li>
+<li>关闭逃逸分析：-XX:-DoEscapeAnalysis</li>
+<li>显示分析结果：-XX:+PrintEscapeAnalysis</li>
+</ul>
+<p>逃逸分析技术在 Java SE 6u23+ 开始支持，并默认设置为启用状态，可以不用额外加这个参数</p>
+<p><strong>对象逃逸状态</strong></p>
+<p><strong>全局逃逸（GlobalEscape）</strong></p>
+<ul>
+<li>即一个对象的作用范围逃出了当前方法或者当前线程，有以下几种场景：<ul>
+<li>对象是一个静态变量</li>
+<li>对象是一个已经发生逃逸的对象</li>
+<li>对象作为当前方法的返回值</li>
+</ul>
+</li>
+</ul>
+<p><strong>参数逃逸（ArgEscape）</strong></p>
+<ul>
+<li>即一个对象被作为方法参数传递或者被参数引用，但在调用过程中不会发生全局逃逸，这个状态是通过被调方法的字节码确定的</li>
+</ul>
+<p><strong>没有逃逸</strong></p>
+<ul>
+<li>即方法中的对象没有发生逃逸</li>
+</ul>
+<p><strong>逃逸分析优化</strong></p>
+<p>针对上面第三点，当一个对象<strong>没有逃逸</strong>时，可以得到以下几个虚拟机的优化</p>
+<p><strong>锁消除</strong></p>
+<p>我们知道线程同步锁是非常牺牲性能的，当编译器确定当前对象只有当前线程使用，那么就会移除该对象的同步锁</p>
+<p>例如，StringBuffer 和 Vector 都是用 synchronized 修饰线程安全的，但大部分情况下，它们都只是在当前线程中用到，这样编译器就会优化移除掉这些锁操作</p>
+<p>锁消除的 JVM 参数如下：</p>
+<ul>
+<li>开启锁消除：-XX:+EliminateLocks</li>
+<li>关闭锁消除：-XX:-EliminateLocks</li>
+</ul>
+<p>锁消除在 JDK8 中都是默认开启的，并且锁消除都要建立在逃逸分析的基础上</p>
+<p><strong>标量替换</strong></p>
+<p>首先要明白标量和聚合量，<strong>基础类型</strong>和<strong>对象的引用</strong>可以理解为<strong>标量</strong>，它们不能被进一步分解。而能被进一步分解的量就是聚合量，比如：对象</p>
+<p>对象是聚合量，它又可以被进一步分解成标量，将其成员变量分解为分散的变量，这就叫做<strong>标量替换</strong>。</p>
+<p>这样，如果一个对象没有发生逃逸，那压根就不用创建它，只会在栈或者寄存器上创建它用到的成员标量，节省了内存空间，也提升了应用程序性能</p>
+<p>标量替换的 JVM 参数如下：</p>
+<ul>
+<li>开启标量替换：-XX:+EliminateAllocations</li>
+<li>关闭标量替换：-XX:-EliminateAllocations</li>
+<li>显示标量替换详情：-XX:+PrintEliminateAllocations</li>
+</ul>
+<p>标量替换同样在 JDK8 中都是默认开启的，并且都要建立在逃逸分析的基础上</p>
+<p><strong>栈上分配</strong></p>
+<p>当对象没有发生逃逸时，该<strong>对象</strong>就可以通过标量替换分解成成员标量分配在<strong>栈内存</strong>中，和方法的生命周期一致，随着栈帧出栈时销毁，减少了 GC 压力，提高了应用程序性能</p>
+<h2 id="5-内存模型"><a href="#5-内存模型" class="headerlink" title="5.内存模型"></a>5.内存模型</h2><p>内存模型内容参考 <a href="/blog/2022/05/01/JUC%E7%AC%94%E8%AE%B0/#4-共享模型之管程">4. 共享模型之管程</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/blog/categories/Java/">Java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/blog/tags/%E5%8E%9F%E5%88%9B/">原创</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2022/05/01/JUC%E7%AC%94%E8%AE%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JUC笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2022/04/27/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">
+                        <span class="hidden-mobile">工具使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"wrkENcnfSbJ0ggzKaUDfz8WY-gzGzoHsz","appKey":"GxHIyhoHwxinOxyKf06Me1o7","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/blog/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+</body>
+</html>

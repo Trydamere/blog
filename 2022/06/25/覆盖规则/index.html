@@ -1,0 +1,662 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/favicon.png">
+  <link rel="icon" href="/blog/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="dubbo的学习总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="覆盖规则">
+<meta property="og:url" content="http://example.com/blog/2022/06/25/%E8%A6%86%E7%9B%96%E8%A7%84%E5%88%99/index.html">
+<meta property="og:site_name" content="Trydamere">
+<meta property="og:description" content="dubbo的学习总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.yilonghuang.com/dubbo%E6%8E%A7%E5%88%B6%E5%8F%B0.png">
+<meta property="og:image" content="https://img.yilonghuang.com/%E5%BA%94%E7%94%A8%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://img.yilonghuang.com/%E5%BA%94%E7%94%A8%E8%BF%90%E8%A1%8CBasicProvider.png">
+<meta property="og:image" content="https://img.yilonghuang.com/dubbo%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%9F%A5%E8%AF%A2BasicProvider.png">
+<meta property="og:image" content="https://img.yilonghuang.com/dubbo%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%9F%A5%E8%AF%A2%E4%B8%A4%E4%B8%AABasicProvider.png">
+<meta property="og:image" content="https://img.yilonghuang.com/%E6%9C%8D%E5%8A%A1%E8%B6%85%E6%97%B6%E5%BC%82%E5%B8%B8.png">
+<meta property="article:published_time" content="2022-06-25T19:57:32.000Z">
+<meta property="article:modified_time" content="2022-07-30T04:00:08.046Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="原创">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img.yilonghuang.com/dubbo%E6%8E%A7%E5%88%B6%E5%8F%B0.png">
+  
+  
+  <title>覆盖规则 - Trydamere</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/blog/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/blog/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"wrkENcnfSbJ0ggzKaUDfz8WY-gzGzoHsz","app_key":"GxHIyhoHwxinOxyKf06Me1o7","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+  </script>
+  <script  src="/blog/js/utils.js" ></script>
+  <script  src="/blog/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/blog/">
+      <strong>Trydamere</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/blog/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/blog/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="覆盖规则">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-06-25 19:57" pubdate>
+        2022年6月25日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      42 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">覆盖规则</h1>
+            
+            <div class="markdown-body">
+              <h1 id="配置规则"><a href="#配置规则" class="headerlink" title="配置规则"></a>配置规则</h1><p>此任务将展示在 Dubbo 中配置应用级治理规则和服务级治理规则</p>
+<blockquote>
+<p><strong>提示</strong></p>
+<p>本文描述的是新版本规则配置，而不是<a target="_blank" rel="noopener" href="https://dubbo.apache.org/zh/docs/advanced/config-rule-deprecated">老版本配置规则</a></p>
+</blockquote>
+<p>覆盖规则是 Dubbo 设计的在无需重启应用的情况下，动态调整 RPC 调用行为的一种能力。2.7.0 版本开始，支持从<strong>服务</strong>和<strong>应用</strong>两个粒度来调整动态配置。</p>
+<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><ul>
+<li><p>安装idea</p>
+</li>
+<li><p>克隆<a target="_blank" rel="noopener" href="https://github.com/Trydamere/dubbo-samples">dubbo-samples</a>到本地，idea打开</p>
+</li>
+<li><p>拉取dubbo-admin镜像并运行镜像</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>提示</strong></p>
+<p>可参考如下步骤部署dubbo-admin</p>
+<ol>
+<li>创建docker-compose.yml文件，内容如下:</li>
+</ol>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></div></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">version</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attribute">services</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">zk</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">image</span><span class="hljs-punctuation">:</span> <span class="hljs-string">zookeeper</span><br>    <span class="hljs-attribute">container_name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">zk</span><br>    <span class="hljs-attribute">ports</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">2181:2181</span><br>  <span class="hljs-attribute">dubbo-admin</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">image</span><span class="hljs-punctuation">:</span> <span class="hljs-string">apache/dubbo-admin</span><br>    <span class="hljs-attribute">container_name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">dubbo-admin</span><br>    <span class="hljs-comment"># 等待zk启动后再启动</span><br>    <span class="hljs-attribute">depends_on</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zk</span><br>    <span class="hljs-attribute">ports</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">8080:8080</span><br>    <span class="hljs-attribute">environment</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">admin.registry.address=zookeeper://zk:2181</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">admin.config-center=zookeeper://zk:2181</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">admin.metadata-report.address=zookeeper://zk:2181</span><br></code></pre></td></tr></table></figure>
+
+<p>2.运行命令</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker-compose up</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<p>运行成功后，可以看见dubbo-admin界面</p>
+<p><img src="https://img.yilonghuang.com/dubbo%E6%8E%A7%E5%88%B6%E5%8F%B0.png" srcset="/blog/img/loading.gif" lazyload alt="dubbo控制台"></p>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>dubbo-samples-governance示例包含dubbo-samples-applevel-override和dubbo-samples-servicelevel-override子示例，这2个子示例分别从<strong>服务</strong>和<strong>应用</strong>两个粒度应用覆盖规则动态调整路由。</p>
+<p>此任务的最初目标是应用覆盖规则在无需重启应用的情况下动态调整流量路由。稍后，您将从<strong>服务</strong>和<strong>应用</strong>两个粒度应用规则动态调整路由。</p>
+<p>下图展示本任务的应用端到端架构。</p>
+<p><img src="https://img.yilonghuang.com/%E5%BA%94%E7%94%A8%E6%9E%B6%E6%9E%84.png" srcset="/blog/img/loading.gif" lazyload alt="应用架构"></p>
+<h3 id="应用粒度"><a href="#应用粒度" class="headerlink" title="应用粒度"></a>应用粒度</h3><p>dubbo-samples-applevel-override示例中，BasicConsumer类和BascicProvider类为消费者类和提供者类，现在运行BasicProvider，成功后如图：</p>
+<p><img src="https://img.yilonghuang.com/%E5%BA%94%E7%94%A8%E8%BF%90%E8%A1%8CBasicProvider.png" srcset="/blog/img/loading.gif" lazyload alt="应用运行BasicProvider"></p>
+<p>在控制台查询服务，可以看到应用governance-appoverride-provider，如图：</p>
+<p><img src="https://img.yilonghuang.com/dubbo%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%9F%A5%E8%AF%A2BasicProvider.png" srcset="/blog/img/loading.gif" lazyload alt="dubbo控制台查询BasicProvider"></p>
+<p>现在再运行一个提供者示例，运行在20881端口，首先修改dubbo-demo-provider.xml，将&lt; dubbo:protocol &#x2F;&gt;标签中端口修改修改为20881，运行BasicProvider，成功后查询控制台，如图：</p>
+<p><img src="https://img.yilonghuang.com/dubbo%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%9F%A5%E8%AF%A2%E4%B8%A4%E4%B8%AABasicProvider.png" srcset="/blog/img/loading.gif" lazyload alt="dubbo控制台查询两个BasicProvider"></p>
+<blockquote>
+<p><strong>提示</strong></p>
+<p>如果运行BasicProvider示例失败，请修改BasicProvider配置，勾选Allow multiple instances</p>
+</blockquote>
+<p>目前需要临时剔除在20880端口的提供者，可以使用覆盖规则进行动态配置。</p>
+<p>1.打开<a target="_blank" rel="noopener" href="http://0.0.0.0/#/governance/config">服务治理控制台</a>，点击”创建“，填入应用名和配置，这个配置将禁用在20880端口上提供（side:provider）的所有服务（scope:application）。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">application</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">governance-appoverride-provider</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-string">&quot;0.0.0.0:20880&quot;</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">provider</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">disabled:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<p>运行BasicConsumer，此时发现是运行在20881端口的提供者提供服务，说明覆盖规则生效。</p>
+<p>目前需要对系统容量进行评估，进行调整权重。</p>
+<ol>
+<li><p>修改刚才的配置，填入配置如下，这个配置将调整20880端口的提供者权重(通常用于容量评估，缺省权重为 200)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">application</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">governance-appoverride-provider</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-string">&quot;0.0.0.0:20880&quot;</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">provider</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">weight:</span> <span class="hljs-number">1000</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>多次运行BasicConsumer，发现运行在20880端口的提供者示例提供服务次数多于20881端口的提供者示例。</p>
+<p>目前需要调整负载均衡策略。</p>
+<ol>
+<li><p>修改刚才的配置，填入配置如下，这个配置将调整负载均衡策略：(缺省负载均衡策略为 random)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">application</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">governance-appoverride-provider</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">side:</span> <span class="hljs-string">consumer</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">loadbalance:</span> <span class="hljs-string">random</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>Random策略按权重设置随机概率，多次运行BasicConsumer，BasicConsumer访问20880端口的概率大于访问20881端口的概率。</p>
+<h3 id="服务粒度"><a href="#服务粒度" class="headerlink" title="服务粒度"></a>服务粒度</h3><p>dubbo-samples-servicelevel-override示例与上面的示例类似，故不赘述。运行BasicProvider类。</p>
+<p>目前需要修改ratings服务的超时时间</p>
+<p>1.打开<a target="_blank" rel="noopener" href="http://0.0.0.0/#/governance/config">服务治理控制台</a>，点击”创建“，填入服务名和配置，这个配置将所有消费（side:consumer）DemoService服务（org.apache.dubbo.samples.governance.api.DemoService）的应用实例（addresses:[0.0.0.0]），超时时间修改为300ms</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">service</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">org.apache.dubbo.samples.governance.api.DemoService</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">consumer</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">timeout:</span> <span class="hljs-number">300</span><br></code></pre></td></tr></table></figure>
+
+<p>运行BasicConsumer类，发现BasicConSumer抛异常无法调用远程方法，如图：</p>
+<p><img src="https://img.yilonghuang.com/%E6%9C%8D%E5%8A%A1%E8%B6%85%E6%97%B6%E5%BC%82%E5%B8%B8.png" srcset="/blog/img/loading.gif" lazyload alt="服务超时异常"></p>
+<p>发现DemoService服务有bug，需要进行服务降级</p>
+<p>1.修改刚才的配置，填入配置如下，这个配置将所有消费（side:consumer）DemoService服务的应用实例（addresses:[0.0.0.0]），无法使用DemoService服务</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">service</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">org.apache.dubbo.samples.governance.api.DemoService</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">consumer</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">force:</span> <span class="hljs-string">return</span> <span class="hljs-literal">null</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><em><strong>TODO: 配置不生效</strong></em></p>
+<h2 id="规则详解"><a href="#规则详解" class="headerlink" title="规则详解"></a>规则详解</h2><h4 id="配置模板"><a href="#配置模板" class="headerlink" title="配置模板"></a>配置模板</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">application/service</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">app-name/group+service+version</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-string">&quot;0.0.0.0&quot;</span>]<br>  <span class="hljs-attr">providerAddresses:</span> [<span class="hljs-string">&quot;1.1.1.1:20880&quot;</span>, <span class="hljs-string">&quot;2.2.2.2:20881&quot;</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">consumer</span><br>  <span class="hljs-attr">applications/services:</span> []<br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">timeout:</span> <span class="hljs-number">1000</span><br>    <span class="hljs-attr">cluster:</span> <span class="hljs-string">failfase</span><br>    <span class="hljs-attr">loadbalance:</span> <span class="hljs-string">random</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-string">&quot;0.0.0.0:20880&quot;</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">provider</span><br>  <span class="hljs-attr">applications/services:</span> []<br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">threadpool:</span> <span class="hljs-string">fixed</span><br>    <span class="hljs-attr">threads:</span> <span class="hljs-number">200</span><br>    <span class="hljs-attr">iothreads:</span> <span class="hljs-number">4</span><br>    <span class="hljs-attr">dispatcher:</span> <span class="hljs-string">all</span><br>    <span class="hljs-attr">weight:</span> <span class="hljs-number">200</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><p><code>configVersion</code> 表示 dubbo 的版本</p>
+</li>
+<li><p><code>scope</code>表示配置作用范围，分别是应用（application）或服务（service）粒度。<strong>必填</strong>。</p>
+</li>
+<li><p><code>key</code>指定规则体作用在哪个服务或应用。<strong>必填</strong>。</p>
+<ul>
+<li>scope&#x3D;service时，key取值为[{group}:]{service}[:{version}]的组合</li>
+<li>scope&#x3D;application时，key取值为application名称</li>
+</ul>
+</li>
+<li><p><code>enabled=true</code> 覆盖规则是否生效，可不填，缺省生效。</p>
+</li>
+<li><p><code>configs</code>定义具体的覆盖规则内容，可以指定n（n&gt;&#x3D;1）个规则体。<strong>必填</strong>。</p>
+<ul>
+<li>side: 消费者端&#x2F;提供者端</li>
+<li>applications: 对应用覆盖规则</li>
+<li>services: 对服务覆盖规则</li>
+<li>parameters: 参数列表</li>
+<li>addresses: 地址值</li>
+<li>providerAddresses: 提供者地址值</li>
+</ul>
+</li>
+</ul>
+<p><strong>对于绝大多数配置场景，只需要理清楚以下问题基本就知道配置该怎么写了：</strong></p>
+<ol>
+<li>要修改整个应用的配置还是某个服务的配置。<ul>
+<li>应用：<code>scope: application, key: app-name</code>（还可使用<code>services</code>指定某几个服务）。</li>
+<li>服务：<code>scope: service, key:group+service+version </code>。</li>
+</ul>
+</li>
+<li>修改是作用到消费者端还是提供者端。<ul>
+<li>消费者：<code>side: consumer</code> ，作用到消费端时（你还可以进一步使用<code>providerAddress</code>, <code>applications</code>选定特定的提供者示例或应用）。</li>
+<li>提供者：<code>side: provider</code>。</li>
+</ul>
+</li>
+<li>配置是否只对某几个特定实例生效。<ul>
+<li>所有实例：<code>addresses: [&quot;0.0.0.0&quot;] </code>或<code>addresses: [&quot;0.0.0.0:*&quot;] </code>具体由side值决定。</li>
+<li>指定实例：<code>addersses[实例地址列表]</code>。</li>
+</ul>
+</li>
+<li>要修改的属性是哪个。</li>
+</ol>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><ol>
+<li><p>禁用提供者：(通常用于临时踢除某台提供者机器，相似的，禁止消费者访问请使用路由规则)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">application</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">demo-provider</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-string">&quot;10.20.153.10:20880&quot;</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">provider</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">disabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>调整权重：(通常用于容量评估，缺省权重为 200)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">application</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">demo-provider</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span> [<span class="hljs-string">&quot;10.20.153.10:20880&quot;</span>]<br>  <span class="hljs-attr">side:</span> <span class="hljs-string">provider</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">weight:</span> <span class="hljs-number">200</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>调整负载均衡策略：(缺省负载均衡策略为 random)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">application</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">demo-consumer</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">side:</span> <span class="hljs-string">consumer</span><br>  <span class="hljs-attr">parameters:</span><br>    <span class="hljs-attr">loadbalance:</span> <span class="hljs-string">random</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>服务降级：(通常用于临时屏蔽某个出错的非关键服务)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-attr">configVersion:</span> <span class="hljs-string">v2.7</span><br><span class="hljs-attr">scope:</span> <span class="hljs-string">service</span><br><span class="hljs-attr">key:</span> <span class="hljs-string">org.apache.dubbo.samples.governance.api.DemoService</span><br><span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br><span class="hljs-attr">configs:</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">side:</span> <span class="hljs-string">consumer</span><br> <span class="hljs-attr">parameters:</span><br>   <span class="hljs-attr">force:</span> <span class="hljs-string">return</span> <span class="hljs-literal">null</span><br><span class="hljs-string">...</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/blog/categories/Dubbo/">Dubbo</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/blog/tags/%E5%8E%9F%E5%88%9B/">原创</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/blog/2022/07/30/routing-rule/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">路由规则</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/blog/2022/05/01/JUC%E7%AC%94%E8%AE%B0/">
+                        <span class="hidden-mobile">JUC笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"wrkENcnfSbJ0ggzKaUDfz8WY-gzGzoHsz","appKey":"GxHIyhoHwxinOxyKf06Me1o7","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/blog/js/events.js" ></script>
+<script  src="/blog/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/blog/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/blog/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/blog/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/blog/js/boot.js" ></script>
+
+
+</body>
+</html>
